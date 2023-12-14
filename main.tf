@@ -164,3 +164,63 @@ resource "huaweicloud_vpn_connection" "vpn-st" {
   customer_gateway_id = huaweicloud_vpn_customer_gateway.cg-st.id
   region = var.region[1]
 }
+
+#ECS in São Paulo
+
+data "huaweicloud_images_image" "ubuntu_sp" {
+    name        = "Ubuntu 18.04 server 64bit"
+    most_recent = true
+}
+
+data "huaweicloud_compute_flavors" "flavor_ecs_sp" {
+  availability_zone = var.availability_zones_sp[0]
+  performance_type  = "normal"
+  cpu_core_count    = 2
+  memory_size       = 4
+}
+
+data "huaweicloud_networking_secgroup" "default_sg_sp" {
+  name = "default"
+}
+resource "huaweicloud_compute_instance" "vm_1_sp" {
+  name = "ecs-sp"
+  image_id = data.huaweicloud_images_image.ubuntu_sp.id
+  flavor_id = data.huaweicloud_compute_flavors.flavor_ecs_sp.flavors[0].id
+  security_group_ids = [data.huaweicloud_networking_secgroup.default_sg_sp.id]
+  admin_pass = var.default_password
+  network {
+    uuid = huaweicloud_vpc_subnet.subnet_sp.id 
+    }
+  region = var.region[0]
+}
+
+#ECS in Santiago
+data "huaweicloud_images_image" "ubuntu_st" {
+    name        = "Ubuntu 18.04 server 64bit"
+    most_recent = true
+    region = var.region[1]
+}
+
+data "huaweicloud_compute_flavors" "flavor_ecs_st" {
+  availability_zone = var.availability_zones_st[0]
+  performance_type  = "normal"
+  cpu_core_count    = 2
+  memory_size       = 4
+  region = var.region[1]
+}
+
+data "huaweicloud_networking_secgroup" "default_sg_st" {
+  name = "default"
+  region = var.region[1]
+}
+resource "huaweicloud_compute_instance" "vm_1_st" {
+  name = "ecs-st"
+  image_id = data.huaweicloud_images_image.ubuntu_st.id
+  flavor_id = data.huaweicloud_compute_flavors.flavor_ecs_st.flavors[0].id
+  security_group_ids = [data.huaweicloud_networking_secgroup.default_sg_st.id]
+  admin_pass = var.default_password
+  network {
+    uuid = huaweicloud_vpc_subnet.subnet_st.id 
+    }
+  region = var.region[1]
+}

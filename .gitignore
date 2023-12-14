@@ -35,3 +35,4 @@ terraform.rc
 
 # Environment configuration script
 config.ps1
+variable.tf

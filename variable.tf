@@ -7,12 +7,12 @@ variable "region" {
 # Authentication
 variable "access_key" {
   type    = string
-  default = ""
+  default = "H4PC6MPYRO1R1F1OAXOF"
 }
 
 variable "secret_key" {
   type    = string
-  default = ""
+  default = "sFQwjfJ4wiYtW5cTKfSlcc0xZWoYrxVQNQq2oiSo"
 }
 
 # availability zones
